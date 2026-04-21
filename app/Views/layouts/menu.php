@@ -34,6 +34,9 @@
 <a href="<?= base_url('users/edit/' . $idu) ?>">
     <i class="bi bi-key"></i> <span>Setting Profil</span>
 </a><br>
+<?php if (session()->get('role') == 'admin') : ?>
+<a href="<?= base_url('/backup') ?>" class="btn btn-success">Backup Database</a>
+<?php endif; ?>
 
 <hr>
 <div class="user-info">

@@ -77,4 +77,9 @@ $routes->group('peminjaman', $authFilter, function($routes) use ($anggota) {
     
     $routes->get('hilang/(:num)', 'Peminjaman::hilang/$1');
     $routes->get('hapus_riwayat/(:num)', 'Peminjaman::hapus_riwayat/$1');
+    $routes->get('/backup', 'Backup::index');
+    $routes->get('/restore', 'Restore::index');
+$routes->post('/restore/auth', 'Restore::auth');
+$routes->get('/restore/form', 'Restore::form');
+$routes->post('/restore/process', 'Restore::process');
 });

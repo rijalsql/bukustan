@@ -210,6 +210,9 @@
             <a href="<?= base_url('users/create') ?>" class="hp-link">
                 <i class="fas fa-feather-alt me-1"></i> Daftar Heula Atuh
             </a>
+            <a href="<?= base_url('restore') ?>" class="btn btn-outline-danger btn-sm">
+<i class="bi bi-database"></i> Restore DB
+</a>
         </div>
     </div>
 
