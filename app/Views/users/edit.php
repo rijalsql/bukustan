@@ -36,7 +36,7 @@
         background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
         border: 3px solid #3d2b1f;
         border-radius: 0;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
     .hp-card-header {
@@ -122,7 +122,7 @@
 <div class="container hp-edit-container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-7">
-            
+
             <div class="mb-4">
                 <?php if (session()->get('role') == 'admin') : ?>
                     <a href="<?= base_url('users') ?>" class="hp-back-link">
@@ -140,7 +140,7 @@
                     <h3 class="hp-form-title">Revisi Identitas</h3>
                     <p class="text-muted small italic mb-0">Pastikan setiap informasi sudah tertulis dengan benar.</p>
                 </div>
-                
+
                 <div class="card-body p-4 p-md-5">
                     <form action="<?= base_url('users/update/' . $user['id']) ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
@@ -176,12 +176,21 @@
                                     <option value="petugas" <?= $user['role'] == 'petugas' ? 'selected' : '' ?>>Petugas </option>
                                     <option value="anggota" <?= $user['role'] == 'anggota' ? 'selected' : '' ?>>Anggota</option>
                                 </select>
-                                <?php if (session()->get('role') != 'admin'): ?>
+                                <?php if (session()->get('role') != 'anggota'): ?>
                                     <input type="hidden" name="role" value="<?= $user['role'] ?>">
                                     <small class="text-danger italic" style="font-size: 10px;">*Hanya ORANG DALAM yang dapat mengubah ini.</small>
                                 <?php endif; ?>
+
                             </div>
 
+                            <div class="col-md-6 mb-4">
+                                <label class="hp-form-label"> status</label>
+                                <select name="status" class="form-select hp-form-input" <?= (session()->get('role') != 'admin') ? 'disabled' : '' ?>>
+                                    <option value="aktif" <?= $user['status'] == 'aktif' ? 'selected' : '' ?>>Aktif</option>
+                                    <option value="nonaktif" <?= $user['status'] == 'nonaktif' ? 'selected' : '' ?>>Nonaktif</option>
+                                    <option value="banned" <?= $user['status'] == 'banned' ? 'selected' : '' ?>>Dibanned</option>
+                                </select>
+                            </div>
                             <div class="col-md-12 mb-5">
                                 <label class="hp-form-label">Foto Profil</label>
                                 <div class="hp-upload-box d-flex align-items-center gap-4">
@@ -204,12 +213,12 @@
 
                         <div class="d-grid mt-2">
                             <button type="submit" class="btn hp-btn-save shadow">
-                                <i class="fas fa-feather-alt me-2"></i>  atoss ? simpen !
+                                <i class="fas fa-feather-alt me-2"></i> atoss ? simpen !
                             </button>
                         </div>
 
                     </form>
-                    
+
                     <div class="hp-footer-note">
                         "Dengan menekan tombol di atas, Anda menyatakan bahwa data ini benar adanya."
                     </div>

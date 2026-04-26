@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Apr 2026 pada 18.30
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Apr 21, 2026 at 08:02 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `buku`
+-- Table structure for table `buku`
 --
 
 CREATE TABLE `buku` (
@@ -39,7 +39,7 @@ CREATE TABLE `buku` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `buku`
+-- Dumping data for table `buku`
 --
 
 INSERT INTO `buku` (`id_buku`, `judul`, `stok`, `denda_per_hari`, `penulis`, `foto`, `kategori`, `harga`) VALUES
@@ -57,18 +57,18 @@ INSERT INTO `buku` (`id_buku`, `judul`, `stok`, `denda_per_hari`, `penulis`, `fo
 (24, 'Buya Hamka', 44, 20000, 'A Fuadi', '1776450543_3e9a1b888cbf229ef1cd.jpg', 'Novel', 0),
 (25, 'Rinjani', 43, 20000, 'Nabila N Harris', '1776450622_88d68374d003790c777f.jpg', 'Novel', 0),
 (26, 'Manajemen Teknik', 47, 2000, 'Sriyono D Siswoyo ', '1776450736_9f0216f67439a5019801.jpg', 'Teknik', 0),
-(27, 'Dasar Teknik Digital', 40, 20000, 'Ahmad Yanie S.T.M.T', '1776450792_46fec1348b5efebbaa72.jpg', 'Teknik', 0),
+(27, 'Dasar Teknik Digital', 41, 20000, 'Ahmad Yanie S.T.M.T', '1776450792_46fec1348b5efebbaa72.jpg', 'Teknik', 0),
 (28, 'Gambar Teknik', 12, 20000, 'Istiana Adianti S.T.,M.Sc', '1776450861_ff9c4e5f544e52bd2a59.jpg', 'Teknik', 0),
 (34, 'Bumi Manusia', 17, 20000, 'Pramoedya Ananta Toer', '1776699815_19a185a6c8e517340b13.jpg', 'Novel', 0),
 (35, 'Ta\'lim al-Muta\'allim Tariq al-Ta\'allum', 19, 20000, 'Syekh Burhanuddin Ibrahim bin Ismail az-Zarnu', '1776700022_348e1e702a97851fc427.jpg', 'Kitab', 0),
-(36, 'Malin Kundang', 21, 20000, 'Dian Aprilia Dewi', '1776700146_685715bb034224630b7c.jpg', 'Cerita', 0),
-(37, 'Ilmu Negara', 22, 20000, 'Dr.Mohammad Syaiful Aris S.H.,M.H.,LLM.', '1776700281_cb89a1415ab8fb4ca1f5.jpg', 'Ilmu', 0),
+(36, 'Malin Kundang', 20, 20000, 'Dian Aprilia Dewi', '1776700146_685715bb034224630b7c.jpg', 'Cerita', 0),
+(37, 'Ilmu Negara', 21, 20000, 'Dr.Mohammad Syaiful Aris S.H.,M.H.,LLM.', '1776700281_cb89a1415ab8fb4ca1f5.jpg', 'Ilmu', 0),
 (38, 'Teknik Sepeda Motor', 22, 20000, 'Drs Daryanto', '1776700392_3270b66d65c048929598.jpg', 'Teknik', 0);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `peminjaman`
+-- Table structure for table `peminjaman`
 --
 
 CREATE TABLE `peminjaman` (
@@ -79,7 +79,7 @@ CREATE TABLE `peminjaman` (
   `tgl_kembali` date DEFAULT NULL,
   `tgl_dikembalikan` date DEFAULT NULL,
   `total_denda` int(11) DEFAULT 0,
-  `status` enum('pending_pinjam','dipinjam','pending_kembali','kembali') DEFAULT 'pending_pinjam',
+  `status` enum('pending_pinjam','dipinjam','pending_kembali','kembali','hilang') DEFAULT 'pending_pinjam',
   `rating` enum('1','2','3','4','5') DEFAULT NULL,
   `ulasan` text DEFAULT NULL,
   `denda` int(11) DEFAULT 0,
@@ -88,7 +88,7 @@ CREATE TABLE `peminjaman` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `peminjaman`
+-- Dumping data for table `peminjaman`
 --
 
 INSERT INTO `peminjaman` (`id_pinjam`, `id_user`, `id_buku`, `tgl_pinjam`, `tgl_kembali`, `tgl_dikembalikan`, `total_denda`, `status`, `rating`, `ulasan`, `denda`, `bukti_bayar`, `status_bayar`) VALUES
@@ -107,13 +107,15 @@ INSERT INTO `peminjaman` (`id_pinjam`, `id_user`, `id_buku`, `tgl_pinjam`, `tgl_
 (78, 6, 37, '2026-04-21', '2026-04-28', NULL, 0, 'kembali', '5', '', 0, NULL, 'belum'),
 (79, 6, 35, '2026-04-21', '2026-04-28', NULL, 0, 'kembali', '5', 'gagah', 0, NULL, 'belum'),
 (80, 6, 34, '2026-04-01', '2026-04-08', NULL, 26000, 'kembali', '5', '', 0, '1776782817_71340a232ee028f5379b.jpg', 'lunas'),
-(81, 6, 27, '2026-04-08', '2026-04-13', NULL, 0, 'pending_kembali', NULL, NULL, 0, '1776783061_279bf0ede8d03dd29a22.jpg', 'lunas'),
-(82, 6, 20, '2026-04-01', '2026-04-07', NULL, 0, 'dipinjam', NULL, NULL, 0, '1776783199_bda5ec39bb363c712522.jpg', 'lunas');
+(81, 6, 27, '2026-04-08', '2026-04-13', NULL, 0, 'hilang', NULL, NULL, 0, '1776783061_279bf0ede8d03dd29a22.jpg', 'belum'),
+(82, 6, 20, '2026-04-01', '2026-04-07', NULL, 0, '', NULL, NULL, 0, '1776783199_bda5ec39bb363c712522.jpg', 'lunas'),
+(83, 6, 37, '2026-04-21', '2026-04-28', NULL, 0, '', NULL, NULL, 0, NULL, 'belum'),
+(84, 6, 36, '2026-04-01', '2026-04-07', NULL, 0, 'dipinjam', NULL, NULL, 0, '1776783199_bda5ec39bb363c712522.jpg', 'lunas');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -124,17 +126,17 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `role` enum('admin','petugas','anggota') DEFAULT 'anggota',
   `foto` varchar(255) DEFAULT NULL,
-  `status` enum('aktif','nonaktif') DEFAULT 'aktif',
+  `status` enum('aktif','nonaktif','banned') DEFAULT 'aktif',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `nama`, `email`, `username`, `password`, `role`, `foto`, `status`, `created_at`) VALUES
 (5, 'ijall', 'rijalatantowi@gmail.com', 'ijall', '$2y$10$JEOcCYwavqfWwSNdIoHvUelnLPUH4UfpSruvn9tw9TmDrdc2GoIO.', 'admin', '1775966822_394d3145720c2c5a9fb9.jpg', 'aktif', '2026-04-12 04:07:02'),
-(6, 'ganjar', 'ganjarkejer@gmail.com', 'ganjar', '$2y$10$lj0MabwURt06N2sNrlB7Wex9KSzVazNbhv.MwhkLdllrceHWh39xK', 'anggota', '1776414362_0a2acc690650ae4f3aca.jpg', 'aktif', '2026-04-16 01:52:47'),
+(6, 'ganjar', 'ganjarkejer@gmail.com', 'ganjar', '$2y$10$lj0MabwURt06N2sNrlB7Wex9KSzVazNbhv.MwhkLdllrceHWh39xK', 'anggota', '1776414362_0a2acc690650ae4f3aca.jpg', 'banned', '2026-04-16 01:52:47'),
 (7, 'Lisa Black Pink', 'Lisssaaaaa@gmail.com', 'Lisa', '$2y$10$kI7VmizxOF1ivhOO8IZyKevqBZD6I2DU4vYuqNNmG.AS7QTnxhrrO', 'anggota', '1776414472_6ddda2e6caf5b5aafa77.jpg', 'aktif', '2026-04-17 06:31:46'),
 (8, 'nizma', 'rijalatantowi@gmail.com', 'ima', '$2y$10$72487hkdGXd5Ts.c9EMKj.ThE6FJgddsMD7mBzCOWvG0h9P5zjaMu', 'admin', '1776703310_fa9d669e1000abffd33f.jpg', 'aktif', '2026-04-20 16:41:50');
 
@@ -143,41 +145,41 @@ INSERT INTO `users` (`id`, `nama`, `email`, `username`, `password`, `role`, `fot
 --
 
 --
--- Indeks untuk tabel `buku`
+-- Indexes for table `buku`
 --
 ALTER TABLE `buku`
   ADD PRIMARY KEY (`id_buku`);
 
 --
--- Indeks untuk tabel `peminjaman`
+-- Indexes for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
   ADD PRIMARY KEY (`id_pinjam`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `buku`
+-- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
   MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
--- AUTO_INCREMENT untuk tabel `peminjaman`
+-- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;

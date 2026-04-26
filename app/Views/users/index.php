@@ -112,8 +112,8 @@
     
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
-            <h2 class="hp-title mb-1">Pengelolaan Orang Dalam & Kroco</h2>
-            <p class="text-light small italic" style="opacity: 0.8;">Mengelola data orang dalam dan pendaftaran anggota .</p>
+            <h2 class="hp-title mb-1">Daftar Pengguna</h2>
+            <p class="text-light small italic" style="opacity: 0.8;">Mengelola data dan pendaftaran anggota .</p>
         </div>
         <div>
             <a href="<?= base_url('users/print?' . http_build_query($_GET)) ?>" target="_blank" class="btn btn-hp btn-hp-gold shadow-sm px-4">
@@ -133,7 +133,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label-hp fw-bold">Filter Kedudukan</label>
+                    <label class="form-label-hp fw-bold">Filter Jabatan</label>
                     <select name="role" class="form-select hp-input">
                         <option value="">-- Semua Orang --</option>
                         <option value="admin" <?= (($_GET['role'] ?? '') == 'admin') ? 'selected' : '' ?>>Admin</option>

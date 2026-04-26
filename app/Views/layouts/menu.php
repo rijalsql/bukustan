@@ -6,7 +6,12 @@
     <i class="bi bi-house"></i> <span>Dashboard</span>
 </a><br>
 
-<?php if (session()->get('role') == 'admin' || session()->get('role') == 'petugas') : ?>
+<?php 
+// Ambil role sekali saja dan ubah ke huruf kecil untuk keamanan
+$role = strtolower(session()->get('role') ?? ''); 
+?>
+
+<?php if ($role == 'admin' || $role == 'petugas') : ?>
     <a href="<?= base_url('/users') ?>">
         <i class="bi bi-people"></i> <span>Data Users</span>
     </a><br>
@@ -20,13 +25,17 @@
     </a><br>
 <?php endif; ?>
 
-<?php if (session()->get('role') == 'anggota') : ?>
+<?php if ($role == 'anggota') : ?>
     <a href="<?= base_url('/stan') ?>">
         <i class="bi bi-book"></i> <span>Rak buku</span>
     </a><br>
 
-    <a href="<?= base_url('riwayat-pinjam') ?>">
+    <a href="<?= base_url('/riwayat-pinjam') ?>">
         <i class="bi bi-clock-history"></i> <span>Riwayat Pinjam</span>
+    </a><br>
+
+    <a href="<?= base_url('/inbox-anggota') ?>">
+        <i class="bi bi-envelope-paper"></i> <span>Kotak Pesan</span>
     </a><br>
 <?php endif; ?>
 
@@ -34,8 +43,9 @@
 <a href="<?= base_url('users/edit/' . $idu) ?>">
     <i class="bi bi-key"></i> <span>Setting Profil</span>
 </a><br>
-<?php if (session()->get('role') == 'admin') : ?>
-<a href="<?= base_url('/backup') ?>" class="btn btn-success">Backup Database</a>
+
+<?php if ($role == 'admin') : ?>
+    <a href="<?= base_url('/backup') ?>" class="btn btn-success">Backup Database</a>
 <?php endif; ?>
 
 <hr>

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\PeminjamanModel;
 use App\Models\BukuModel;
+use App\Models\InboxModel; // Tambahkan ini agar rapi
 
 class Peminjaman extends BaseController
 {
@@ -105,18 +106,15 @@ class Peminjaman extends BaseController
         return redirect()->back()->with('success', 'Mantra konfirmasi berhasil dijalankan!');
     }
 
-    // --- FUNGSI AJUKAN KEMBALI (DENGAN CEK DENDA) ---
     public function ajukan_kembali($id_pinjam)
     {
         $pinjam = $this->pModel->find($id_pinjam);
         if (!$pinjam) return redirect()->back()->with('error', 'Data tidak ditemukan.');
 
-        // Cek apakah telat berdasarkan deadline
         $tgl_deadline = strtotime($pinjam['tgl_kembali']);
         $tgl_sekarang = time();
         $is_telat = $tgl_sekarang > $tgl_deadline;
 
-        // Jika telat dan denda belum lunas, paksa bayar dulu
         if ($is_telat && $pinjam['status_bayar'] != 'lunas') {
             return redirect()->back()->with('error', 'Sihir Terkunci! Anda telat mengembalikan buku. Silakan bayar denda dan upload bukti transfer terlebih dahulu.');
         }
@@ -125,62 +123,55 @@ class Peminjaman extends BaseController
         return redirect()->back()->with('success', 'Permintaan pengembalian telah dikirim ke Admin!');
     }
 
-   public function upload_bukti($id_pinjam)
-{
-    // Validasi biar yang diupload beneran gambar & ukurannya gak kegedean
-    $validationRule = [
-        'bukti_bayar' => [
-            'rules' => 'uploaded[bukti_bayar]|max_size[bukti_bayar,2048]|is_image[bukti_bayar]|mime_in[bukti_bayar,image/jpg,image/jpeg,image/png]',
-            'errors' => [
-                'uploaded' => 'Pilih file fotonya dulu, Rij.',
-                'max_size' => 'Ukuran fotonya kegedean (Max 2MB).',
-                'is_image' => 'Yang lo upload bukan foto tuh.',
-                'mime_in'  => 'Format foto harus JPG, JPEG, atau PNG.'
+    public function upload_bukti($id_pinjam)
+    {
+        $validationRule = [
+            'bukti_bayar' => [
+                'rules' => 'uploaded[bukti_bayar]|max_size[bukti_bayar,2048]|is_image[bukti_bayar]|mime_in[bukti_bayar,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'uploaded' => 'Pilih file fotonya dulu.',
+                    'max_size' => 'Ukuran fotonya kegedean (Max 2MB).',
+                    'is_image' => 'Yang diupload bukan foto.',
+                    'mime_in'  => 'Format foto harus JPG, JPEG, atau PNG.'
+                ]
             ]
-        ]
-    ];
+        ];
 
-    if (!$this->validate($validationRule)) {
-        return redirect()->back()->with('error', $this->validator->getError('bukti_bayar'));
+        if (!$this->validate($validationRule)) {
+            return redirect()->back()->with('error', $this->validator->getError('bukti_bayar'));
+        }
+
+        $fileBukti = $this->request->getFile('bukti_bayar');
+
+        if ($fileBukti->isValid() && !$fileBukti->hasMoved()) {
+            $namaFile = $fileBukti->getRandomName();
+            $fileBukti->move('uploads/bukti_transfer/', $namaFile);
+
+            $this->pModel->update($id_pinjam, [
+                'bukti_bayar'  => $namaFile,
+                'status_bayar' => 'proses'
+            ]);
+
+            return redirect()->back()->with('success', 'Bukti berhasil diupload! Tunggu validasi Admin.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal upload bukti.');
     }
 
-    $fileBukti = $this->request->getFile('bukti_bayar');
-
-    if ($fileBukti->isValid() && !$fileBukti->hasMoved()) {
-        $namaFile = $fileBukti->getRandomName();
-        
-        // Pindah ke folder public/uploads/bukti_transfer/
-        $fileBukti->move('uploads/bukti_transfer/', $namaFile);
-
-        // Update database melalui model
-        $this->pModel->update($id_pinjam, [
-            'bukti_bayar'  => $namaFile,
-            'status_bayar' => 'proses'
-        ]);
-
-        return redirect()->back()->with('success', 'Bukti berhasil diupload! Tunggu validasi Admin.');
-    }
-
-    return redirect()->back()->with('error', 'Gagal upload bukti.');
-}
-
-    // --- FITUR INTIP BUKTI OLEH ADMIN ---
     public function lihat_bukti($id_pinjam)
     {
         $pinjam = $this->pModel->find($id_pinjam);
         if (!$pinjam || !$pinjam['bukti_bayar']) {
             return '<div class="alert alert-danger">Bukti transfer belum diupload atau tidak ditemukan.</div>';
         }
-        
-        // Return HTML mentah untuk ditampilkan di Modal AJAX
         return '<img src="' . base_url('uploads/bukti_transfer/' . $pinjam['bukti_bayar']) . '" class="img-fluid" alt="Bukti Transfer">';
     }
 
     public function bayar_denda($id_pinjam)
     {
         $pinjam = $this->pModel->select('peminjaman.*, buku.judul')
-                               ->join('buku', 'buku.id_buku = peminjaman.id_buku')
-                               ->find($id_pinjam);
+            ->join('buku', 'buku.id_buku = peminjaman.id_buku')
+            ->find($id_pinjam);
 
         $tgl_deadline = strtotime($pinjam['tgl_kembali']);
         $tgl_sekarang = time();
@@ -188,12 +179,12 @@ class Peminjaman extends BaseController
 
         if ($tgl_sekarang > $tgl_deadline) {
             $selisih = floor(($tgl_sekarang - $tgl_deadline) / (60 * 60 * 24));
-            $total_bayar = $selisih * 20000;
+            $total_bayar = $selisih * 2000; // Pastikan jumlah denda sesuai (2000 atau 20000)
         }
 
         if ($total_bayar <= 0) return redirect()->back();
 
-        $nomor_dana = "085353780185"; 
+        $nomor_dana = "085353780185";
         $pesan = "Denda Perpustakaan - " . $pinjam['judul'];
         $url_dana = "https://link.dana.id/send-money/?phoneNumber=" . $nomor_dana . "&amount=" . $total_bayar . "&comment=" . urlencode($pesan);
 
@@ -203,7 +194,7 @@ class Peminjaman extends BaseController
     public function setujui_pembayaran($id_pinjam)
     {
         $this->pModel->update($id_pinjam, ['status_bayar' => 'lunas']);
-        return redirect()->back()->with('success', 'Pembayaran denda diverifikasi! Anggota bisa mengembalikan buku.');
+        return redirect()->to('/peminjaman')->with('success', 'Pembayaran denda diverifikasi!');
     }
 
     public function beri_rating($id_pinjam)
@@ -219,15 +210,39 @@ class Peminjaman extends BaseController
     public function hilang($id_pinjam)
     {
         $pinjam = $this->pModel->select('peminjaman.*, buku.harga')
-                               ->join('buku', 'buku.id_buku = peminjaman.id_buku')
-                               ->find($id_pinjam);
+            ->join('buku', 'buku.id_buku = peminjaman.id_buku')
+            ->find($id_pinjam);
         $this->pModel->update($id_pinjam, ['status' => 'hilang', 'total_denda' => $pinjam['harga']]);
-        return redirect()->back()->with('error', 'Buku dinyatakan hilang.');
+        return redirect()->to('/peminjaman')->with('error', 'Buku dinyatakan hilang.');
     }
 
     public function hapus_riwayat($id_pinjam)
     {
         $this->pModel->delete($id_pinjam);
         return redirect()->back()->with('success', 'Data dihapus.');
+    }
+
+    // VERSI TERBAIK: Hanya ada satu fungsi kirim_peringatan dengan parameter ID Pinjam
+    public function kirim_peringatan($id_pinjam)
+    {
+        $inboxModel = new InboxModel();
+        
+        // Cari data lengkap termasuk judul buku dari join
+        $dataPinjam = $this->pModel->select('peminjaman.*, buku.judul')
+            ->join('buku', 'buku.id_buku = peminjaman.id_buku')
+            ->find($id_pinjam);
+        
+        if ($dataPinjam) {
+            $data = [
+                'id_user' => $dataPinjam['id_user'],
+                'subjek'  => '⚠️ PERINGATAN KETERLAMBATAN',
+                'pesan'   => "Halo, buku dengan judul '{$dataPinjam['judul']}' sudah melewati batas waktu. Mohon segera dikembalikan ke perpustakaan. Terima kasih."
+            ];
+
+            $inboxModel->save($data);
+            return redirect()->back()->with('success', 'Pesan peringatan berhasil dikirim!');
+        }
+
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 }

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - BUKUSTAN </title>
+    <title>BUKUSTAN </title>
 
     <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+<link rel="icon" href="<?= base_url('uploads/users/IJAL.png') ?>">
     <style>
         :root {
             --hp-red: #740001;
@@ -20,8 +20,8 @@
         }
 
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             font-family: 'Crimson Text', serif;
@@ -39,7 +39,7 @@
             border-radius: 10px;
             padding: 40px;
             border: 3px solid var(--hp-ink);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
         }
 
@@ -54,7 +54,7 @@
             background: #ae0001;
             border-radius: 50%;
             border: 2px solid #800000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -130,7 +130,7 @@
             width: 100%;
             transition: 0.4s;
             text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-hp:hover {
@@ -184,7 +184,7 @@
 
         <?php if (session()->getFlashdata('error') || session()->getFlashdata('salahpw')): ?>
             <div class="hp-alert">
-                <i class="fas fa-bolt me-2"></i> 
+                <i class="fas fa-bolt me-2"></i>
                 <?= session()->getFlashdata('error') ?? session()->getFlashdata('salahpw') ?>
             </div>
         <?php endif; ?>
@@ -211,8 +211,8 @@
                 <i class="fas fa-feather-alt me-1"></i> Daftar Heula Atuh
             </a>
             <a href="<?= base_url('restore') ?>" class="btn btn-outline-danger btn-sm">
-<i class="bi bi-database"></i> Restore DB
-</a>
+                <i class="bi bi-database"></i> Restore DB
+            </a>
         </div>
     </div>
 

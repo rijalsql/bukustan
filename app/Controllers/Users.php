@@ -152,6 +152,7 @@ class Users extends BaseController
             'email'    => $this->request->getPost('email'),
             'username' => $this->request->getPost('username'),
             'role'     => $this->request->getPost('role'),
+            'status'   => $this->request->getPost('status'),
             'foto'     => $namaFoto
         ];
 
@@ -163,7 +164,7 @@ class Users extends BaseController
         // Jalankan update ke database
         $this->users->update($id, $data);
         if (session()->get('role') == 'anggota') {
-            return redirect()->to('/users/edit/' . $id)->with('succces','profil berhasil di update');
+            return redirect()->to('/users/edit/' . $id)->with('succces', 'profil berhasil di update');
         }
 
         // Redirect dengan pesan sukses

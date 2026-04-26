@@ -52,8 +52,8 @@ class Restore extends Controller
             return redirect()->back()->with('error', 'File harus berformat .sql');
         }
 
-// TAMBAHAN : Otomatis membuat database jika belum ada
-        $dbName = 'pustaka'; // Sesuaikan dengan nama database
+        // TAMBAHAN : Otomatis membuat database jika belum ada
+        $dbName = 'bukustan'; // Sesuaikan dengan nama database
 
         $conn = new \mysqli('localhost', 'root', '', '');
 

@@ -147,10 +147,10 @@
 
 <div class="magic-container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
-        <h2 style="font-family: 'MedievalSharp'; color: var(--hp-gold);">📚 Rak Kitab Terlarang</h2>
+        <h2 style="font-family: 'MedievalSharp'; color: var(--hp-gold);">📚 Rak Bukustan</h2>
         
         <form action="<?= base_url('buku') ?>" method="get" style="display: flex; gap: 5px;">
-            <input type="text" name="keyword" placeholder="Cari judul..." value="<?= $keyword ?>" style="background: var(--hp-parchment); border: 1px solid #3d2b1f; padding: 5px 10px;">
+            <input type="text" name="keyword" placeholder="Cari judul..." value="<?= $keyword ?>" style="background: var(--hp-parchment); border: 1px solid #0f0f0f; padding: 5px 10px;">
             <button type="submit" style="background: var(--hp-red); color: var(--hp-gold); border: 1px solid var(--hp-gold); cursor: pointer; padding: 5px 15px;">Temukan</button>
         </form>
     </div>
@@ -170,7 +170,7 @@
 
     <?php if(session()->get('role') == 'admin'): ?>
         <div style="margin-bottom: 30px;">
-            <a href="<?= base_url('buku/create') ?>" style="background: var(--hp-gold); color: var(--hp-red); padding: 10px 20px; text-decoration: none; font-family: 'MedievalSharp'; font-weight: bold; border: 1px solid var(--hp-red);">+ Tambah Kitab Baru</a>
+            <a href="<?= base_url('buku/create') ?>" style="background: var(--hp-gold); color: var(--hp-red); padding: 10px 20px; text-decoration: none; font-family: 'MedievalSharp'; font-weight: bold; border: 1px solid var(--hp-red);">+ Tambah Buku Baru</a>
         </div>
     <?php endif; ?>
 
@@ -191,14 +191,14 @@
                         <div class="flame-part flame-4"></div>
                     </div>
 
-                    <img src="<?= base_url('uploads/buku/' . ($b['foto'] ?: 'default.jpg')) ?>" style="width: 100%; height: 300px; object-fit: cover; border-bottom: 2px solid #3d2b1f;">
+                    <img src="<?= base_url('uploads/buku/' . ($b['foto'] ?: 'default.jpg')) ?>" style="width: 100%; height: 300px; object-fit: cover; border-bottom: 2px solid #0e0d0d;">
                     
                     <div style="padding: 15px;">
                         <h5 style="font-family: 'MedievalSharp'; color: var(--hp-red); margin-bottom: 5px; height: 45px; overflow: hidden;"><?= $b['judul'] ?></h5>
-                        <p style="font-size: 13px; color: #5d4037; margin-bottom: 10px;">Oleh: <?= $b['penulis'] ?></p>
+                        <p style="font-size: 13px; color: #0f0f0f; margin-bottom: 10px;">Oleh: <?= $b['penulis'] ?></p>
                         
                         <div style="display: flex; flex-direction: column; gap: 5px;">
-                            <a href="<?= base_url('buku/detail/' . $b['id_buku']) ?>" class="btn-magic-action btn-detail">Periksa Kitab</a>
+                            <a href="<?= base_url('buku/detail/' . $b['id_buku']) ?>" class="btn-magic-action btn-detail">Periksa Buku</a>
                             
                             <?php if(session()->get('role') == 'admin'): ?>
                                 <div style="display: flex; gap: 5px;">

@@ -35,4 +35,12 @@ class PeminjamanModel extends Model {
         // Menggunakan orderBy agar data terbaru muncul di atas
         return $builder->orderBy('peminjaman.id_pinjam', 'DESC')->findAll();
     }
+    public function getTotalPendapatanDenda()
+{
+    // Menghitung total dari kolom total_denda di mana status_bayar adalah lunas
+    return $this->where('status_bayar', 'lunas')
+                ->selectSum('total_denda')
+                ->get()
+                ->getRow()->total_denda ?? 0;
+}
 }

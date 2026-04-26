@@ -34,8 +34,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-          'auth' => \App\Filters\AuthFilter::class,
-  'role' => \App\Filters\RoleFilter::class,
+        'auth' => \App\Filters\AuthFilter::class,
+        'role' => \App\Filters\RoleFilter::class,
     ];
 
     /**
@@ -78,8 +78,12 @@ class Filters extends BaseFilters
             // 'csrf',
             // 'invalidchars',
             'auth' => ['except' => [
-                '/', 
-                'proses-login', 
+                '/',
+                'proses-login',
+                '/restore',
+                '/restore/auth',
+                '/restore/form',
+                '/restore/process',
                 'users/create', // Pintu masuk halaman daftar
                 'users/store',  // Pintu simpan data pendaftaran
                 'login'         // Tambahkan kalau route login lo pakai nama ini

@@ -235,7 +235,7 @@
         </div>
 
         <div class="text-center mt-4 text-white-50 small italic">
-            <p>Dokumen ini diterbitkan oleh Departemen Manajemen BUKUSTAN</p>
+            <p>Dokumen ini diterbitkan oleh  Manajemen BUKUSTAN</p>
         </div>
 
     </div>

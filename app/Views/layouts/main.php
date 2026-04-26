@@ -1,190 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUKUSTAN - Hogwarts Library</title>
-    
+    <title>BUKUSTAN</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
     <style>
-        :root {
-            --hp-gold: #ffc500;
-            --hp-dark-red: #740001; /* Gryffindor Red */
-            --hp-parchment: #f4e1d2;
-            --hp-ink: #2b2b2b;
-            --hp-border: #3d2b1f;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a1a;
-            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
-            font-family: 'Crimson Text', serif;
-            color: var(--hp-parchment);
-        }
-
-        .custom-navbar {
-            background-color: var(--hp-dark-red);
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-            padding: 0 5%;
-            height: 90px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 9999;
-            border-bottom: 4px solid var(--hp-gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
         }
 
-        .nav-logo {
+        /* Sidebar Styling */
+        .sidebar-bukustan {
+            width: 260px;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            background-color: #740001; /* Merah Marun */
+            border-right: 4px solid #d4af37; /* Garis Emas */
+            color: white;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .brand-area {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            text-decoration: none;
+        }
+
+        .brand-area b {
             font-family: 'MedievalSharp', cursive;
-            font-size: 30px;
-            color: var(--hp-gold) !important;
-            text-decoration: none !important;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            letter-spacing: 3px;
+            color: #d4af37;
+            font-size: 1.6rem;
+            display: block;
+            margin-top: 10px;
         }
 
+        /* Menu Navigasi Sidebar */
         .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            height: 100%;
+            list-style: none;
+            padding: 20px 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
         }
 
-        .nav-item {
-            font-family: 'Crimson Text', serif;
-            text-decoration: none !important;
-            color: var(--hp-parchment);
-            font-size: 19px;
-            font-weight: 700;
+        .nav-links li {
             padding: 5px 15px;
-            transition: 0.3s;
-            position: relative;
-            border-bottom: 2px solid transparent;
         }
 
-        .nav-item:hover {
-            color: var(--hp-gold);
-            border-bottom: 2px solid var(--hp-gold);
-            text-shadow: 0 0 10px rgba(255, 197, 0, 0.5);
-        }
-
-        .notif-badge {
-            background: #ae0001;
-            color: var(--hp-gold);
-            font-size: 12px;
-            padding: 2px 7px;
-            border-radius: 50%;
-            border: 1px solid var(--hp-gold);
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .nav-user {
+        .nav-links a {
+            color: #f4e1d2;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 15px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding-left: 20px;
-            border-left: 2px solid var(--hp-gold);
+            gap: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        .user-name {
-            font-size: 18px;
-            color: var(--hp-gold);
+        .nav-links a i {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-links a:hover {
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            padding-left: 20px;
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-left: 4px solid #d4af37;
+            font-weight: bold;
+        }
+
+        /* User Section di Bawah Sidebar */
+        .user-section {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .user-info-text {
+            margin-bottom: 15px;
+        }
+
+        .user-info-text span {
+            font-size: 0.8rem;
+            color: #d4af37;
             font-style: italic;
         }
 
-        .user-name b {
-            font-family: 'MedievalSharp', cursive;
-            color: var(--hp-parchment);
-            letter-spacing: 1px;
+        .user-info-text strong {
+            font-size: 1rem;
+            display: block;
         }
 
-        .btn-logout {
-            background-color: transparent;
-            color: var(--hp-parchment);
-            padding: 8px 15px;
-            border: 1px solid var(--hp-gold);
-            text-decoration: none !important;
-            font-size: 16px;
+        .btn-keluar {
+            display: block;
+            border: 1px solid #d4af37;
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
             font-weight: bold;
+            background: #9d0000;
             transition: 0.3s;
-            text-transform: uppercase;
         }
 
-        .btn-logout:hover {
-            background-color: var(--hp-gold);
-            color: var(--hp-dark-red);
-            box-shadow: 0 0 15px var(--hp-gold);
+        .btn-keluar:hover {
+            background: #d4af37;
+            color: #740001;
         }
 
+        /* Main Content Area */
         .main-content {
-            padding-top: 40px;
-            padding-bottom: 60px;
-            min-height: 100vh;
+            flex-grow: 1;
+            margin-left: 260px; /* Sesuai lebar sidebar */
+            padding: 40px;
+            width: calc(100% - 260px);
         }
 
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--hp-border);
-            border: 2px solid var(--hp-gold);
+        @media (max-width: 768px) {
+            .sidebar-bukustan {
+                width: 70px;
+            }
+            .sidebar-bukustan b, .sidebar-bukustan span, .user-section {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+            .nav-links a {
+                justify-content: center;
+                padding: 15px 0;
+            }
+            .nav-links a i {
+                margin: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<nav class="custom-navbar">
-    <a href="<?= base_url('dashboard') ?>" class="nav-logo">
-        <i class="fas fa-hat-wizard me-2"></i>BUKUSTAN
-    </a>
+    <aside class="sidebar-bukustan">
+        <a href="<?= base_url('/') ?>" class="brand-area">
+            <img src="https://cdn-icons-png.flaticon.com/512/1067/1067357.png" height="50" alt="Logo">
+            <b>BUKUSTAN</b>
+        </a>
 
-    <div class="nav-links">
-        <a href="<?= base_url('dashboard') ?>" class="nav-item">Dashboard</a>
-        <a href="<?= base_url('buku') ?>" class="nav-item">Rak Buku</a>
-        
-        <?php if(session()->get('role') == 'admin'): ?>
-            <a href="<?= base_url('peminjaman') ?>" class="nav-item">
-                Manajemen Peminjaman
-                <?php if(isset($notif_konfirmasi) && $notif_konfirmasi > 0): ?>
-                    <span class="notif-badge"><?= $notif_konfirmasi ?></span>
-                <?php endif; ?>
-            </a>
-            <a href="<?= base_url('users') ?>" class="nav-item">Kroco List</a>
-        <?php else: ?>
-            <a href="<?= base_url('peminjaman/riwayat') ?>" class="nav-item">
-                <i class="fas fa-history me-1"></i> Pinjaman Saya
-            </a>
-        <?php endif; ?>
+        <ul class="nav-links">
+            <li>
+                <a href="<?= base_url('/') ?>" class="<?= url_is('/') ? 'active' : '' ?>">
+                    <i class="bi bi-house"></i> <span>Dashboard</span>
+                </a>
+            </li>
 
-        <div class="nav-user">
-            <span class="user-name">Penyihir: <b><?= session()->get('nama') ?></b></span>
-            <a href="<?= base_url('logout') ?>" class="btn-logout" onclick="return confirm('Meninggalkan Hogwarts?')">
-                <i class="fas fa-feather-alt me-1"></i> Keluar
+            <?php $role = strtolower(session()->get('role') ?? ''); ?>
+
+            <?php if ($role == 'admin' || $role == 'petugas') : ?>
+                <li><a href="<?= base_url('/users') ?>" class="<?= url_is('users*') ? 'active' : '' ?>"><i class="bi bi-people"></i> <span>Data Users</span></a></li>
+                <li><a href="<?= base_url('/buku') ?>" class="<?= url_is('buku*') ? 'active' : '' ?>"><i class="bi bi-journal-bookmark"></i> <span>Rak Buku</span></a></li>
+                <li><a href="<?= base_url('/peminjaman') ?>" class="<?= url_is('peminjaman*') ? 'active' : '' ?>"><i class="bi bi-journal-check"></i> <span>Peminjaman</span></a></li>
+            <?php endif; ?>
+
+            <?php if ($role == 'anggota') : ?>
+                <li><a href="<?= base_url('/stan') ?>" class="<?= url_is('stan*') ? 'active' : '' ?>"><i class="bi bi-book"></i> <span>Rak Buku</span></a></li>
+                <li><a href="<?= base_url('peminjaman/riwayat') ?>" class="<?= url_is('peminjaman/riwayat*') ? 'active' : '' ?>"><i class="bi bi-clock-history"></i> <span>Pinjaman Saya</span></a></li>
+                <li><a href="<?= base_url('/inbox-anggota') ?>" class="<?= url_is('inbox-anggota*') ? 'active' : '' ?>"><i class="bi bi-envelope"></i> <span>Kotak Pesan</span></a></li>
+            <?php endif; ?>
+
+            <li><a href="<?= base_url('users/edit/' . session('id')) ?>" class="<?= url_is('users/edit*') ? 'active' : '' ?>"><i class="bi bi-person-circle"></i> <span>Profil Saya</span></a></li>
+        </ul>
+
+        <div class="user-section">
+            <div class="user-info-text">
+                <span>Selamat Datang,</span>
+                <strong><?= session('nama'); ?></strong>
+            </div>
+            
+            <?php if ($role == 'admin') : ?>
+                <a href="<?= base_url('/backup') ?>" class="btn btn-success btn-sm w-100 mb-2" style="font-size: 11px;">Backup Database</a>
+            <?php endif; ?>
+
+            <a href="<?= base_url('/logout') ?>" class="btn-keluar" onclick="return confirm('Yakin ingin keluar?')">
+                <i class="bi bi-door-open"></i> KELUAR
             </a>
         </div>
-    </div>
-</nav>
+    </aside>
 
-<div class="main-content">
-    <div class="container">
-        <?= $this->renderSection('content') ?>
-    </div>
-</div>
+    <main class="main-content">
+        <div class="container-fluid">
+            <?= $this->renderSection('content') ?>
+        </div>
+    </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

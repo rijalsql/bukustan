@@ -75,17 +75,24 @@
             <div class="fs-3 me-3">📜</div>
             <div>
                 <strong style="font-family: 'MedievalSharp';">Otoritas Pengelola Perpustakaan Aktif!</strong> 
-                Cek bukti transfer dan verifikasi naskah yang kembali.
+                Cek bukti transfer dan verifikasi buku yang kembali.
             </div>
         </div>
     <?php endif; ?>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="hp-title mb-1">Log Transaksi Kitab</h2>
+        <h2 class="hp-title mb-1">Log Transaksi Buku</h2>
         <span class="badge" style="background: var(--hp-gold); color: var(--hp-red); border: 1px solid var(--hp-red); font-family: 'MedievalSharp';">
             Total Arsip: <?= count($peminjaman) ?>
         </span>
     </div>
+
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 
     <div class="card hp-card-table">
         <div class="table-responsive">
@@ -160,49 +167,57 @@
                         </td>
 
                         <td class="text-center">
-                            <div class="btn-group-vertical w-100">
-                                <?php if(session()->get('role') == 'admin'): ?>
-                                    <?php if($p['status'] == 'pending_pinjam'): ?>
-                                        <form action="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_pinjam') ?>" method="post">
-                                            <div class="p-2 mb-1" style="background: rgba(0,0,0,0.05); border: 1px solid var(--hp-gold);">
-                                                <input type="date" name="tgl_pinjam" value="<?= $p['tgl_pinjam'] ?>" class="form-control form-control-sm mb-1" style="font-size: 10px;">
-                                                <input type="date" name="tgl_kembali" value="<?= $p['tgl_kembali'] ?>" class="form-control form-control-sm" style="font-size: 10px;">
-                                            </div>
-                                            <button type="submit" class="btn btn-sm btn-success btn-hp-action w-100">ACC Pinjam</button>
-                                        </form>
-                                    <?php elseif($p['status_bayar'] == 'proses'): ?>
-                                        <a href="<?= base_url('peminjaman/setujui_pembayaran/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Konfirmasi dana sudah masuk?')">ACC Bayar Denda</a>
-                                    <?php elseif($p['status'] == 'pending_kembali'): ?>
-                                        <a href="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_kembali') ?>" class="btn btn-sm btn-primary btn-hp-action">Terima Buku</a>
-                                    <?php elseif($p['status'] == 'dipinjam'): ?>
-                                        <a href="<?= base_url('peminjaman/hilang/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-danger btn-hp-action" onclick="return confirm('Tandai hilang?')">Hilang</a>
-                                    <?php else: ?>
-                                        <a href="<?= base_url('peminjaman/hapus_riwayat/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-outline-danger btn-hp-action" onclick="return confirm('Hapus permanen?')">Hapus</a>
-                                    <?php endif; ?>
+    <div class="btn-group-vertical w-100">
+        <?php if(session()->get('role') == 'admin'): ?>
+            <?php if($p['status'] == 'pending_pinjam'): ?>
+                <form action="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_pinjam') ?>" method="post">
+                    <div class="p-2 mb-1" style="background: rgba(0,0,0,0.05); border: 1px solid var(--hp-gold);">
+                        <input type="date" name="tgl_pinjam" value="<?= $p['tgl_pinjam'] ?>" class="form-control form-control-sm mb-1" style="font-size: 10px;">
+                        <input type="date" name="tgl_kembali" value="<?= $p['tgl_kembali'] ?>" class="form-control form-control-sm" style="font-size: 10px;">
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-success btn-hp-action w-100">ACC Pinjam</button>
+                </form>
+            <?php elseif($p['status_bayar'] == 'proses'): ?>
+                <a href="<?= base_url('peminjaman/setujui_pembayaran/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Konfirmasi dana sudah masuk?')">ACC Bayar Denda</a>
+            <?php elseif($p['status'] == 'pending_kembali'): ?>
+                <a href="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_kembali') ?>" class="btn btn-sm btn-primary btn-hp-action">Terima Buku</a>
+            <?php elseif($p['status'] == 'dipinjam'): ?>
+                <a href="<?= base_url('peminjaman/hilang/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-danger btn-hp-action mb-1" onclick="return confirm('Tandai hilang?')">Hilang</a>
+                
+                <a href="<?= base_url('peminjaman/kirim_peringatan/'.$p['id_pinjam']) ?>" 
+                   class="btn btn-sm btn-hp-action" 
+                   style="background: #e67e22; color: white;"
+                   onclick="return confirm('Kirim pesan peringatan ke anggota?')">
+                   📩 Tagih Anggota
+                </a>
 
-                                <?php else: ?>
-                                    <?php if($p['status'] == 'dipinjam'): ?>
-                                        <?php if($is_telat && $p['status_bayar'] != 'lunas'): ?>
-                                            <?php if($p['status_bayar'] == 'proses'): ?>
-                                                <button class="btn btn-sm btn-secondary btn-hp-action" disabled>Dicek Admin</button>
-                                            <?php else: ?>
-                                                <a href="<?= base_url('peminjaman/bayar_denda/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-warning btn-hp-action mb-1" target="_blank">📲 Bayar DANA</a>
-                                                <button type="button" class="btn btn-sm btn-danger btn-hp-action" data-bs-toggle="modal" data-bs-target="#modalBayar<?= $p['id_pinjam'] ?>">💸 Upload Bukti</button>
-                                            <?php endif; ?>
-                                        <?php else: ?>
-                                            <a href="<?= base_url('peminjaman/ajukan_kembali/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Kembalikan sekarang?')">Kembalikan</a>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            </div>
-                        </td>
+            <?php else: ?>
+                <a href="<?= base_url('peminjaman/hapus_riwayat/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-outline-danger btn-hp-action" onclick="return confirm('Hapus permanen?')">Hapus</a>
+            <?php endif; ?>
+
+        <?php else: ?>
+            <?php if($p['status'] == 'dipinjam'): ?>
+                <?php if($is_telat && $p['status_bayar'] != 'lunas'): ?>
+                    <?php if($p['status_bayar'] == 'proses'): ?>
+                        <button class="btn btn-sm btn-secondary btn-hp-action" disabled>Dicek Admin</button>
+                    <?php else: ?>
+                        <a href="<?= base_url('peminjaman/bayar_denda/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-warning btn-hp-action mb-1" target="_blank">📲 Bayar DANA</a>
+                        <button type="button" class="btn btn-sm btn-danger btn-hp-action" data-bs-toggle="modal" data-bs-target="#modalBayar<?= $p['id_pinjam'] ?>">💸 Upload Bukti</button>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <a href="<?= base_url('peminjaman/ajukan_kembali/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Kembalikan sekarang?')">Kembalikan</a>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+</td>
                     </tr>
 
                     <div class="modal fade" id="modalBayar<?= $p['id_pinjam'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content" style="background: var(--hp-parchment); border: 3px solid #3d2b1f;">
                                 <form action="<?= base_url('peminjaman/upload_bukti/'.$p['id_pinjam']) ?>" method="post" enctype="multipart/form-data">
-                                    <div class="modal-header border-0"><h5 class="hp-title">📜 Segel Pelunasan</h5></div>
+                                    <div class="modal-header border-0"><h5 class="hp-title">📜  Pelunasan</h5></div>
                                     <div class="modal-body">
                                         <p>Silakan upload bukti transfer denda <strong>Rp <?= number_format($total_denda, 0, ',', '.') ?></strong></p>
                                         <input type="file" name="bukti_bayar" class="form-control" required accept="image/*">
