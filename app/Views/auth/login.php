@@ -4,27 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUKUSTAN </title>
+    <title>BUKUSTAN - Sistem Perpustakaan Modern</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="icon" href="<?= base_url('uploads/users/IJAL.png') ?>">
+    
+    
+
     <style>
         :root {
-            --hp-red: #740001;
-            --hp-gold: #ffc500;
-            --hp-dark: #1a1a1a;
-            --hp-parchment: #f4e1d2;
-            --hp-ink: #3d2b1f;
+            --primary-color: #2c3e50; /* Navy Professional */
+            --accent-color: #3498db;  /* Biru Modern */
+            --bg-light: #f8f9fa;
+            --text-main: #333333;
+            --text-muted: #6c757d;
         }
 
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            font-family: 'Crimson Text', serif;
+            background: #f0f2f5;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', sans-serif;
             height: 100vh;
             margin: 0;
             display: flex;
@@ -32,186 +31,171 @@
             justify-content: center;
         }
 
-        .hp-card {
-            background-color: var(--hp-parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-            width: 420px;
-            border-radius: 10px;
+        .login-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
             padding: 40px;
-            border: 3px solid var(--hp-ink);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .hp-card::after {
-            content: 'H';
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: #ae0001;
-            border-radius: 50%;
-            border: 2px solid #800000;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--hp-gold);
-            font-family: 'MedievalSharp';
-            font-size: 30px;
-            line-height: 60px;
+        .login-header {
             text-align: center;
+            margin-bottom: 35px;
         }
 
-        .hp-header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px double var(--hp-ink);
-            padding-bottom: 15px;
+        .login-header img {
+            width: 70px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
-        .hp-header h2 {
-            font-family: 'MedievalSharp', cursive;
-            color: var(--hp-red);
+        .login-header h2 {
+            color: var(--primary-color);
             font-weight: 700;
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .hp-header span {
-            font-style: italic;
-            color: #5d4037;
-            font-size: 0.9rem;
-            display: block;
-            line-height: 1.2;
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
 
-        .hp-label {
-            color: var(--hp-ink);
-            font-size: 0.9rem;
-            margin-left: 5px;
-            margin-bottom: 5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: block;
-            font-family: 'MedievalSharp', cursive;
+        .form-label {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
-        .hp-input {
-            background: rgba(255, 255, 255, 0.4);
-            border: none;
-            border-bottom: 2px solid var(--hp-ink);
-            border-radius: 0;
-            padding: 10px 15px;
-            font-size: 1.1rem;
-            width: 100%;
-            margin-bottom: 25px;
-            transition: 0.3s;
-            color: #2b2b2b;
+        .form-control {
+            background: #fdfdfd;
+            border: 1.5px solid #e1e5eb;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
-        .hp-input:focus {
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
             outline: none;
-            background: rgba(255, 255, 255, 0.7);
-            border-bottom-color: var(--hp-red);
+            background: #fff;
         }
 
-        .btn-hp {
-            background: var(--hp-red);
-            color: var(--hp-gold);
-            border: 2px solid var(--hp-gold);
-            padding: 12px;
-            border-radius: 5px;
-            font-family: 'MedievalSharp', cursive;
-            font-size: 1.3rem;
-            width: 100%;
-            transition: 0.4s;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-hp:hover {
-            transform: scale(1.02);
-            background: #8e0001;
-            box-shadow: 0 0 20px rgba(186, 0, 1, 0.4);
+        .btn-primary-custom {
+            background: var(--primary-color);
             color: #fff;
-        }
-
-        /* Styling baru untuk Link Daftar */
-        .hp-register-box {
-            margin-top: 25px;
-            text-align: center;
-            border-top: 1px dashed var(--hp-ink);
-            padding-top: 15px;
-        }
-
-        .hp-link {
-            font-family: 'MedievalSharp', cursive;
-            color: var(--hp-ink);
-            text-decoration: none;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
             font-size: 1rem;
-            transition: 0.3s;
         }
 
-        .hp-link:hover {
-            color: var(--hp-red);
+        .btn-primary-custom:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
+        }
+
+        .register-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .register-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-footer a:hover {
             text-decoration: underline;
         }
 
-        .hp-alert {
-            background: #3d2b1f;
-            color: var(--hp-gold);
-            border-left: 5px solid var(--hp-red);
-            padding: 10px;
-            font-size: 1rem;
+        .alert-custom {
+            background: #fff5f5;
+            color: #c53030;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.85rem;
             margin-bottom: 20px;
-            text-align: center;
-            font-style: italic;
+            border: 1px solid #feb2b2;
+            display: flex;
+            align-items: center;
+        }
+
+        .restore-btn {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: #e53e3e;
+            text-decoration: none;
+            border: 1px solid #feb2b2;
+            padding: 5px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .restore-btn:hover {
+            background: #fff5f5;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="hp-card">
-        <div class="hp-header">
+    <div class="login-card">
+        <div class="login-header">
+            
             <h2>BUKUSTAN</h2>
-            <span>"Manusia Punya Rencana Tetapi Allah Punya Kuasa"</span>
+            <p>"Manusia Punya Rencana, Allah Punya Kuasa"</p>
         </div>
 
         <?php if (session()->getFlashdata('error') || session()->getFlashdata('salahpw')): ?>
-            <div class="hp-alert">
-                <i class="fas fa-bolt me-2"></i>
+            <div class="alert-custom">
+                <i class="fas fa-exclamation-circle me-2"></i>
                 <?= session()->getFlashdata('error') ?? session()->getFlashdata('salahpw') ?>
             </div>
         <?php endif; ?>
 
         <form action="<?= base_url('/proses-login') ?>" method="post">
-            <?= csrf_field() ?> <div>
-                <label class="hp-label">Username</label>
-                <input type="text" name="username" class="hp-input" placeholder="Siapa namamu?" required autocomplete="off">
+            <?= csrf_field() ?>
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Masukkan username" required autocomplete="off">
             </div>
 
-            <div class="mb-2">
-                <label class="hp-label">Password</label>
-                <input type="password" name="password" class="hp-input" placeholder="Masukkan sandi..." required>
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
             </div>
 
-            <button type="submit" class="btn-hp">
-                <i class="fas fa-wand-magic-sparkles me-2"></i> MASUK KE BUKUSTAN
+            <button type="submit" class="btn-primary-custom">
+                Masuk ke Dashboard
             </button>
         </form>
 
-        <div class="hp-register-box">
-            <span class="text-muted small">Belum terdaftar di BUKUSTAN?</span><br>
-            <a href="<?= base_url('users/create') ?>" class="hp-link">
-                <i class="fas fa-feather-alt me-1"></i> Daftar Heula Atuh
+        <div class="register-footer">
+            <span>Belum memiliki akun?</span><br>
+            <a href="<?= base_url('users/create') ?>">
+                Buat Akun Sekarang
             </a>
-            <a href="<?= base_url('restore') ?>" class="btn btn-outline-danger btn-sm">
-                <i class="bi bi-database"></i> Restore DB
+            <br>
+            <a href="<?= base_url('restore') ?>" class="restore-btn">
+                <i class="fas fa-database me-1"></i> Restore Database
             </a>
         </div>
     </div>

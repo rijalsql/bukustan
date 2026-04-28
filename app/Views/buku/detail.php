@@ -1,97 +1,288 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<div class="container" style="padding: 20px; font-family: 'Crimson Text', serif;">
-    <a href="<?= base_url('buku') ?>" style="text-decoration: none; color: #740001; font-weight: bold;">
-        ← Kembali ke Rak Buku
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --primary-blue: #2563eb;
+        --dark-slate: #1e293b;
+        --soft-bg: #f8fafc;
+        --border-color: #e2e8f0;
+    }
+
+    body {
+        background-color: var(--soft-bg);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .detail-container {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        transition: 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--primary-blue);
+    }
+
+    /* Main Card Layout */
+    .modern-detail-card {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .detail-image-section {
+        flex: 1;
+        min-width: 350px;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+    }
+
+    .detail-image-section img {
+        width: 100%;
+        max-width: 280px;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        transition: 0.3s;
+    }
+
+    .detail-info-section {
+        flex: 1.5;
+        min-width: 400px;
+        padding: 3rem;
+    }
+
+    .category-badge {
+        background: #eff6ff;
+        color: var(--primary-blue);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .book-main-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--dark-slate);
+        margin: 1rem 0 0.5rem 0;
+        line-height: 1.2;
+    }
+
+    .book-main-author {
+        font-size: 1.1rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+    }
+
+    /* Stats Grid */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-box {
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--dark-slate);
+    }
+
+    /* Review Section */
+    .review-header {
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .review-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: 0.2s;
+    }
+
+    .review-card:hover {
+        border-color: var(--primary-blue);
+        transform: translateX(5px);
+    }
+
+    .reviewer-name {
+        font-weight: 700;
+        color: var(--dark-slate);
+    }
+
+    .rating-stars {
+        color: #f59e0b; /* Amber 500 */
+        font-size: 0.9rem;
+    }
+
+    .btn-loan {
+        background: var(--primary-blue);
+        color: white;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s;
+        border: none;
+    }
+
+    .btn-loan:hover {
+        background: #1d4ed8;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        color: white;
+    }
+
+    .btn-edit-detail {
+        background: #f1f5f9;
+        color: var(--dark-slate);
+    }
+
+    @media (max-width: 768px) {
+        .detail-image-section { padding: 2rem; }
+        .detail-info-section { padding: 2rem; }
+        .book-main-title { font-size: 1.8rem; }
+    }
+</style>
+
+<div class="detail-container">
+    <a href="<?= base_url('buku') ?>" class="back-link">
+        <i class="fas fa-arrow-left"></i> Kembali ke Rak Buku
     </a>
-    
-    <div style="display: flex; gap: 40px; margin-top: 20px; background: #f4e1d2; background-image: url('https://www.transparenttextures.com/patterns/parchment.png'); padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid #3d2b1f;">
-        
-        <div style="flex: 1; max-width: 300px;">
-            <img src="<?= base_url('uploads/buku/' . ($buku['foto'] ?: 'default.jpg')) ?>" 
-                 style="width: 100%; border-radius: 10px; box-shadow: 5px 5px 15px rgba(0,0,0,0.5); border: 3px solid #3d2b1f;">
+
+    <div class="modern-detail-card">
+        <div class="detail-image-section">
+            <img src="<?= base_url('uploads/buku/' . ($buku['foto'] ?: 'default.jpg')) ?>" alt="Book Cover">
         </div>
 
-        <div style="flex: 2;">
-            <span style="background: #740001; color: #ffc500; padding: 5px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; text-transform: uppercase; border: 1px solid #ffc500; font-family: 'MedievalSharp';">
-                <?= $buku['kategori']; ?>
-            </span>
+        <div class="detail-info-section">
+            <span class="category-badge"><?= $buku['kategori']; ?></span>
             
-            <h1 style="margin-top: 15px; margin-bottom: 5px; font-family: 'MedievalSharp'; color: #740001;"><?= $buku['judul']; ?></h1>
-            <p style="font-size: 18px; color: #3d2b1f; margin-bottom: 20px; font-style: italic;">Penulis: <strong><?= $buku['penulis']; ?></strong></p>
+            <h1 class="book-main-title"><?= $buku['judul']; ?></h1>
+            <p class="book-main-author">Karya: <strong><?= $buku['penulis']; ?></strong></p>
 
-            <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; text-align: center; min-width: 100px; border: 1px solid #3d2b1f;">
-                    <small style="display: block; color: #3d2b1f; font-weight: bold;">STOK</small>
-                    <strong style="font-size: 20px; color: <?= $buku['stok'] > 0 ? '#27ae60' : '#e74c3c' ?>;">
-                        <?= $buku['stok']; ?>
-                    </strong>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <span class="stat-label">Tersedia</span>
+                    <span class="stat-value" style="color: <?= $buku['stok'] > 0 ? '#10b981' : '#ef4444' ?>;">
+                        <?= $buku['stok']; ?> Buku
+                    </span>
                 </div>
-                <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; text-align: center; min-width: 100px; border: 1px solid #3d2b1f;">
-                    <small style="display: block; color: #3d2b1f; font-weight: bold;">RATING</small>
-                    <strong style="font-size: 20px; color: #b8860b;">
-                        <?= isset($buku['rata_rating']) ? round($buku['rata_rating'], 1) : '0'; ?> ★
-                    </strong>
+                <div class="stat-box">
+                    <span class="stat-label">Rating</span>
+                    <span class="stat-value" style="color: #f59e0b;">
+                        <i class="fas fa-star me-1"></i><?= isset($buku['rata_rating']) ? round($buku['rata_rating'], 1) : '0'; ?>
+                    </span>
                 </div>
-                <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; text-align: center; min-width: 150px; border: 1px solid #3d2b1f;">
-                    <small style="display: block; color: #3d2b1f; font-weight: bold;">DENDA / HARI</small>
-                    <strong style="font-size: 18px; color: #740001;">Rp <?= number_format($buku['denda_per_hari'], 0, ',', '.'); ?></strong>
+                <div class="stat-box">
+                    <span class="stat-label">Denda / Hari</span>
+                    <span class="stat-value">Rp <?= number_format($buku['denda_per_hari'], 0, ',', '.'); ?></span>
                 </div>
             </div>
 
-            <div style="border-top: 2px double #3d2b1f; padding-top: 20px;">
+            <div class="action-footer pt-4 border-top">
                 <?php if(session()->get('role') == 'anggota' && $buku['stok'] > 0): ?>
-                    <a href="<?= base_url('peminjaman/pinjam/' . $buku['id_buku']) ?>" 
-                       style="background: #740001; color: #ffc500; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; display: inline-block; border: 2px solid #ffc500; font-family: 'MedievalSharp';">
-                       📜 Pinjam Sekarang
+                    <a href="<?= base_url('peminjaman/pinjam/' . $buku['id_buku']) ?>" class="btn-loan">
+                        <i class="fas fa-bookmark"></i> Pinjam Buku Ini
                     </a>
                 <?php elseif(session()->get('role') == 'admin'): ?>
-                    <a href="<?= base_url('buku/edit/' . $buku['id_buku']) ?>" 
-                       style="background: #ffc500; color: #740001; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; display: inline-block; border: 2px solid #740001; font-family: 'MedievalSharp';">
-                       ✍️ Edit Data Buku
+                    <a href="<?= base_url('buku/edit/' . $buku['id_buku']) ?>" class="btn-loan btn-edit-detail">
+                        <i class="fas fa-edit text-primary"></i> Edit Data Koleksi
                     </a>
                 <?php else: ?>
-                    <button disabled style="background: #ccc; color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: not-allowed; font-family: 'MedievalSharp';">
-                        🚫 Stok Habis
+                    <button disabled class="btn-loan" style="background: #e2e8f0; color: #94a3b8; cursor: not-allowed;">
+                        <i class="fas fa-times-circle"></i> Stok Tidak Tersedia
                     </button>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: 50px;">
-        <h2 style="font-family: 'MedievalSharp'; color: #ffc500; text-shadow: 2px 2px 4px #000; border-bottom: 2px solid #ffc500; padding-bottom: 10px;">
-            📜  Ulasan Anggota
-        </h2>
+    <div class="review-header">
+        <h3 class="fw-bold text-dark m-0">Ulasan Pembaca</h3>
+        <span class="text-muted small"><?= count($ulasan) ?> Ulasan Total</span>
+    </div>
 
-        <?php if (!empty($ulasan)): ?>
-            <div style="display: grid; gap: 20px; margin-top: 25px;">
-                <?php foreach ($ulasan as $u): ?>
-                    <div style="background: #fdf5e6; border-left: 8px solid #740001; padding: 20px; border-radius: 5px; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); border: 1px solid #3d2b1f;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong style="color: #740001; font-size: 1.2rem; font-family: 'MedievalSharp';"><?= htmlspecialchars($u['nama']) ?></strong>
-                            <div style="color: #b8860b; font-size: 1.2rem;">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <?= $i <= $u['rating'] ? '★' : '☆' ?>
-                                <?php endfor; ?>
+    <?php if (!empty($ulasan)): ?>
+        <div class="row">
+            <?php foreach ($ulasan as $u): ?>
+                <div class="col-md-12">
+                    <div class="review-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="reviewer-name"><?= htmlspecialchars($u['nama']) ?></span>
+                                <div class="rating-stars mt-1">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="<?= $i <= $u['rating'] ? 'fas fa-star' : 'far fa-star text-muted' ?>"></i>
+                                    <?php endfor; ?>
+                                </div>
                             </div>
+                            <small class="text-muted italic" style="font-size: 0.75rem;">
+                                <?= date('d M Y', strtotime($u['tgl_kembali'])) ?>
+                            </small>
                         </div>
-                        <p style="font-style: italic; color: #2b2b2b; font-size: 1.1rem; line-height: 1.5; margin: 0;">
+                        <p class="text-secondary mb-0" style="line-height: 1.6; font-style: italic;">
                             "<?= htmlspecialchars($u['ulasan']) ?>"
                         </p>
-                        <small style="color: #5d4037; font-size: 0.85rem; display: block; margin-top: 15px; text-align: right; font-weight: bold;">
-                            — Selesai dibaca pada <?= date('d M Y', strtotime($u['tgl_kembali'])) ?>
-                        </small>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <div style="text-align: center; padding: 40px; border: 2px dashed #ffc500; color: #f4e1d2; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
-                <p style="font-size: 1.2rem; font-style: italic;">Belum ada ulasan untuk buku ini. Jadilah Kroco pertama yang memberikan kesan!</p>
-            </div>
-        <?php endif; ?>
-    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <div class="text-center py-5 bg-white rounded-4 border">
+            <i class="far fa-comment-dots fa-3x text-light mb-3"></i>
+            <p class="text-muted">Belum ada ulasan untuk buku ini.<br>Jadilah yang pertama memberikan kesan!</p>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?= $this->endSection() ?>

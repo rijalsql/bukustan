@@ -1,95 +1,210 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<div class="hp-scroll-container" style="margin: 20px; border: 2px solid #3d2b1f; border-radius: 15px; background: #f4e4bc; box-shadow: 10px 10px 20px rgba(0,0,0,0.3); overflow: hidden; font-family: 'Georgia', serif;">
-    
-    <div class="hp-header" style="background: #5c0909; padding: 20px; border-bottom: 3px solid #d4af37; text-align: center;">
-        <h2 style="margin: 0; color: #d4af37; text-transform: uppercase; letter-spacing: 3px; text-shadow: 2px 2px #000;">
-            ⚡ Edit Arsip Buku ⚡
-        </h2>
-    </div>
-
-    <div class="hp-body" style="padding: 30px; background-image: url('https://www.transparenttextures.com/patterns/parchment.png');">
-        <form action="<?= base_url('buku/update/' . $buku['id_buku']) ?>" method="post" enctype="multipart/form-data">
-            <?= csrf_field(); ?>
-
-            <input type="hidden" name="id_buku" value="<?= $buku['id_buku'] ?>">
-
-            <div style="margin-bottom: 20px;">
-                <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">📜 Judul Buku</label>
-                <input type="text" name="judul" value="<?= htmlspecialchars($buku['judul']) ?>" 
-                       style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #3d2b1f; border-radius: 5px; background: rgba(255,255,255,0.5); font-style: italic;" required>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">✍️ Penulis </label>
-                <input type="text" name="penulis" value="<?= htmlspecialchars($buku['penulis']) ?>" 
-                       style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #3d2b1f; border-radius: 5px; background: rgba(255,255,255,0.5);" required>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">🗂️ Kategori</label>
-                <select name="kategori" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #3d2b1f; border-radius: 5px; background: rgba(255,255,255,0.5);" required>
-                    <?php $kats = ['Kitab', 'Novel', 'Cerita', 'Ilmu', 'Teknik']; ?>
-                    <?php foreach($kats as $k): ?>
-                        <option value="<?= $k ?>" <?= ($buku['kategori'] == $k) ? 'selected' : '' ?>><?= $k ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div style="margin-bottom: 20px; display: flex; gap: 20px;">
-                <div style="flex: 1;">
-                    <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">📦 Stok Tersedia</label>
-                    <input type="number" name="stok" value="<?= $buku['stok'] ?>" 
-                           style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #3d2b1f; border-radius: 5px; background: rgba(255,255,255,0.5);" required>
-                </div>
-                <div style="flex: 1;">
-                    <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">💰 Upeti Telat (Rp)</label>
-                    <input type="number" name="denda_per_hari" value="<?= $buku['denda_per_hari'] ?>" 
-                           style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #3d2b1f; border-radius: 5px; background: rgba(255,255,255,0.5);" required>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="color: #3d2b1f; font-weight: bold; font-variant: small-caps; font-size: 1.1rem;">🖼️ Ganti Visual Buku</label>
-                <input type="file" name="foto" style="margin-top: 5px; color: #3d2b1f;"><br>
-                
-                <div style="margin-top: 15px; padding: 15px; border: 2px dashed #5c0909; width: fit-content; background: rgba(255,255,255,0.3); border-radius: 10px;">
-                    <small style="color: #5c0909; display: block; margin-bottom: 8px; font-weight: bold;">Penampakan Saat Ini:</small>
-                    <?php if ($buku['foto']): ?>
-                        <img src="<?= base_url('uploads/buku/' . $buku['foto']) ?>" width="120" style="border-radius: 5px; border: 2px solid #3d2b1f; box-shadow: 5px 5px 15px rgba(0,0,0,0.2);">
-                    <?php else: ?>
-                        <span style="color: #777; font-style: italic;">Belum ada penampakan visual</span>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <hr style="border: 0; border-top: 2px double #3d2b1f; margin: 30px 0;">
-
-            <div style="text-align: center;">
-                <button type="submit" style="background: #5c0909; color: #d4af37; border: 2px solid #d4af37; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px #000;">
-                    Simpan Perubahan 
-                </button>
-                
-                <a href="<?= base_url('buku') ?>" style="text-decoration: none; color: #f4e4bc; background: #3d2b1f; padding: 12px 30px; border-radius: 8px; margin-left: 15px; font-size: 14px; display: inline-block; font-weight: bold; border: 2px solid #3d2b1f;">
-                    Kembali ke Perpustakaan
-                </a>
-            </div>
-
-        </form>
-    </div>
-</div>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    button:hover {
-        background: #7a0c0c !important;
-        transform: translateY(-2px);
+    :root {
+        --primary-blue: #2563eb;
+        --dark-slate: #1e293b;
+        --border-color: #e2e8f0;
+        --bg-light: #f8fafc;
     }
-    input:focus, select:focus {
+
+    body {
+        background-color: var(--bg-light);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .form-container {
+        max-width: 900px;
+        margin: 2rem auto;
+    }
+
+    .modern-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        background: white;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-header-modern h4 {
+        font-weight: 700;
+        color: var(--dark-slate);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .form-control-modern {
+        border-radius: 10px;
+        border: 1.5px solid var(--border-color);
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+    }
+
+    .form-control-modern:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         outline: none;
-        border-color: #5c0909 !important;
-        box-shadow: 0 0 8px rgba(92, 9, 9, 0.4);
+    }
+
+    /* Current Image Preview */
+    .current-image-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 15px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        margin-top: 10px;
+    }
+
+    .img-preview-sm {
+        width: 80px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Buttons */
+    .btn-modern {
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+    }
+
+    .btn-update {
+        background-color: var(--primary-blue);
+        color: white;
+    }
+
+    .btn-update:hover {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-back {
+        background-color: #f1f5f9;
+        color: #64748b;
+        text-decoration: none;
+    }
+
+    .btn-back:hover {
+        background-color: #e2e8f0;
+        color: var(--dark-slate);
     }
 </style>
+
+<div class="container form-container">
+    <div class="modern-card">
+        <div class="card-header-modern">
+            <h4>
+                <div style="width: 40px; height: 40px; background: #fff7ed; color: #f97316; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-edit"></i>
+                </div>
+                Edit Koleksi Buku
+            </h4>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            <form action="<?= base_url('buku/update/' . $buku['id_buku']) ?>" method="post" enctype="multipart/form-data">
+                <?= csrf_field(); ?>
+                <input type="hidden" name="id_buku" value="<?= $buku['id_buku'] ?>">
+
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <label class="form-label-modern">Judul Buku</label>
+                        <input type="text" name="judul" class="form-control form-control-modern" 
+                               value="<?= htmlspecialchars($buku['judul']) ?>" required>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-modern">Penulis</label>
+                        <input type="text" name="penulis" class="form-control form-control-modern" 
+                               value="<?= htmlspecialchars($buku['penulis']) ?>" required>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-modern">Kategori</label>
+                        <select name="kategori" class="form-select form-control-modern" required>
+                            <?php $kats = ['Kitab', 'Novel', 'Cerita', 'Ilmu', 'Teknik']; ?>
+                            <?php foreach($kats as $k): ?>
+                                <option value="<?= $k ?>" <?= ($buku['kategori'] == $k) ? 'selected' : '' ?>><?= $k ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-modern">Stok Tersedia</label>
+                        <input type="number" name="stok" class="form-control form-control-modern" 
+                               value="<?= $buku['stok'] ?>" required>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-modern">Denda Per Hari (Rp)</label>
+                        <input type="number" name="denda_per_hari" class="form-control form-control-modern" 
+                               value="<?= $buku['denda_per_hari'] ?>" required>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <label class="form-label-modern">Update Cover Buku</label>
+                        <input type="file" name="foto" class="form-control form-control-modern">
+                        
+                        <div class="current-image-wrapper mt-3">
+                            <?php if ($buku['foto']): ?>
+                                <img src="<?= base_url('uploads/buku/' . $buku['foto']) ?>" class="img-preview-sm">
+                                <div>
+                                    <p class="mb-1 fw-bold text-dark" style="font-size: 0.9rem;">Cover Saat Ini</p>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">Abaikan jika tidak ingin mengubah gambar.</p>
+                                </div>
+                            <?php else: ?>
+                                <div class="text-muted italic p-2" style="font-size: 0.85rem;">
+                                    <i class="fas fa-image me-1"></i> Belum ada cover terunggah.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-top d-flex justify-content-end gap-3">
+                    <a href="<?= base_url('buku') ?>" class="btn-modern btn-back">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn-modern btn-update">
+                        <i class="fas fa-check-circle"></i> Perbarui Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?= $this->endSection() ?>

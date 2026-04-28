@@ -208,13 +208,29 @@ class Peminjaman extends BaseController
     }
 
     public function hilang($id_pinjam)
-    {
-        $pinjam = $this->pModel->select('peminjaman.*, buku.harga')
-            ->join('buku', 'buku.id_buku = peminjaman.id_buku')
-            ->find($id_pinjam);
-        $this->pModel->update($id_pinjam, ['status' => 'hilang', 'total_denda' => $pinjam['harga']]);
-        return redirect()->to('/peminjaman')->with('error', 'Buku dinyatakan hilang.');
+{
+    // 1. Ambil data peminjaman sekaligus harga buku menggunakan join
+    $pinjam = $this->pModel->select('peminjaman.id_pinjam, buku.harga')
+        ->join('buku', 'buku.id_buku = peminjaman.id_buku')
+        ->find($id_pinjam);
+
+    // 2. Cek apakah data ditemukan untuk menghindari error
+    if (!$pinjam) {
+        return redirect()->to('/peminjaman')->with('error', 'Data transaksi tidak ditemukan.');
     }
+
+    // 3. Update status menjadi 'hilang' dan set total_denda sebesar harga buku
+    // Pastikan 'status_bayar' diset ke 'belum' agar anggota wajib membayar
+    $this->pModel->update($id_pinjam, [
+        'status'       => 'hilang',
+        'total_denda'  => $pinjam['harga'],
+        'status_bayar' => 'belum' 
+    ]);
+
+    // 4. Gunakan pesan 'success' agar Admin tahu proses berhasil, 
+    // tapi isi pesannya menjelaskan tentang sanksi denda.
+    return redirect()->to('/peminjaman')->with('success', 'Buku dinyatakan HILANG. Denda otomatis ditagihkan sebesar Rp ' . number_format($pinjam['harga'], 0, ',', '.'));
+}
 
     public function hapus_riwayat($id_pinjam)
     {

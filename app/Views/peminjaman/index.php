@@ -1,229 +1,264 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --hp-gold: #ffc500;
-        --hp-red: #740001;
-        --hp-ink: #2b2b2b;
-        --hp-parchment: #f4e1d2;
+        --primary-blue: #2563eb;
+        --bg-body: #f8fafc;
+        --text-main: #1e293b;
+        --border-color: #e2e8f0;
     }
 
-    .hp-container {
-        padding: 30px;
-        font-family: 'Crimson Text', serif;
+    body {
+        background-color: var(--bg-body);
+        font-family: 'Inter', sans-serif;
     }
 
-    .hp-alert-admin {
-        background-color: var(--hp-red);
-        color: var(--hp-gold);
-        border: 2px double var(--hp-gold);
-        border-radius: 0;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    .log-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
     }
 
-    .hp-title {
-        font-family: 'MedievalSharp', cursive;
-        color: var(--hp-gold);
-        text-shadow: 2px 2px 4px #000;
+    /* Admin Alert Section */
+    .admin-banner {
+        background: #eff6ff;
+        border-left: 5px solid var(--primary-blue);
+        border-radius: 12px;
+        padding: 1.25rem;
+        color: #1e40af;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 2rem;
     }
 
-    .hp-card-table {
-        background-color: var(--hp-parchment);
-        background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-        border: 3px solid #3d2b1f;
-        border-radius: 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Header Styling */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
     }
 
-    .table thead {
-        background: #3d2b1f;
-        color: var(--hp-parchment);
-        font-family: 'MedievalSharp', cursive;
+    .page-header h2 {
+        font-weight: 800;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+    }
+
+    /* Table Styling */
+    .table-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        overflow: hidden;
+    }
+
+    .modern-table thead {
+        background: #f1f5f9;
+        color: #64748b;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
     }
 
-    .hp-badge {
-        font-family: 'MedievalSharp', cursive;
-        border-radius: 0;
+    .modern-table th {
+        padding: 1rem 1.5rem;
+        border: none;
+    }
+
+    .modern-table td {
+        padding: 1.2rem 1.5rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* Badge & Status */
+    .status-badge {
         padding: 6px 12px;
-        text-transform: uppercase;
-        font-size: 10px !important;
-        letter-spacing: 1px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-block;
     }
 
-    .bg-hp-warning { background: #b8860b; color: #fff; } 
-    .bg-hp-info { background: #2f4f4f; color: #fff; }    
-    .bg-hp-primary { background: #000080; color: #fff; } 
-    .bg-hp-success { background: #1b4d3e; color: #fff; }
+    .status-dipesan { background: #fef3c7; color: #92400e; }
+    .status-dipinjam { background: #dcfce7; color: #166534; }
+    .status-proses { background: #dbeafe; color: #1e40af; }
+    .status-selesai { background: #f1f5f9; color: #475569; }
 
-    .btn-hp-action {
-        font-family: 'MedievalSharp', cursive;
-        font-size: 11px;
-        text-transform: uppercase;
-        border-radius: 0;
+    /* Action Buttons */
+    .btn-action-sm {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+    .btn-acc { background: var(--primary-blue); color: white; border: none; }
+    .btn-acc:hover { background: #1d4ed8; color: white; }
+
+    .btn-tagih { background: #fff1f2; color: #e11d48; border: none; }
+    .btn-tagih:hover { background: #ffe4e6; }
+
+    /* Modal Styling */
+    .modal-content-modern {
+        border-radius: 20px;
+        border: none;
+    }
+
+    .modal-header-modern {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
     }
 </style>
 
-<div class="hp-container">
+<div class="log-container">
     
     <?php if(session()->get('role') == 'admin'): ?>
-        <div class="alert hp-alert-admin d-flex align-items-center mb-4">
-            <div class="fs-3 me-3">📜</div>
+        <div class="admin-banner">
+            <i class="fas fa-shield-alt fa-2x"></i>
             <div>
-                <strong style="font-family: 'MedievalSharp';">Otoritas Pengelola Perpustakaan Aktif!</strong> 
-                Cek bukti transfer dan verifikasi buku yang kembali.
+                <h6 class="mb-0 fw-bold">Mode Administrator Aktif</h6>
+                <p class="mb-0 small opacity-75">Anda memiliki otoritas penuh untuk memverifikasi transaksi dan bukti pembayaran.</p>
             </div>
         </div>
     <?php endif; ?>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="hp-title mb-1">Log Transaksi Buku</h2>
-        <span class="badge" style="background: var(--hp-gold); color: var(--hp-red); border: 1px solid var(--hp-red); font-family: 'MedievalSharp';">
+    <div class="page-header">
+        <div>
+            <h2 class="mb-0">Log Transaksi</h2>
+            <p class="text-muted small">Kelola peminjaman dan pengembalian buku anggota.</p>
+        </div>
+        <span class="badge bg-dark rounded-pill px-3 py-2">
             Total Arsip: <?= count($peminjaman) ?>
         </span>
     </div>
 
     <?php if (session()->getFlashdata('success')) : ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= session()->getFlashdata('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
         </div>
     <?php endif; ?>
 
-    <div class="card hp-card-table">
+    <div class="table-card">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table modern-table mb-0">
                 <thead>
                     <tr>
-                        <th class="text-center py-3">No</th>
+                        <th class="text-center">ID</th>
                         <th>Anggota</th>
-                        <th>Detail Buku</th>
-                        <th>Batas Waktu</th>
-                        <th>Denda</th>
-                        <th class="text-center">Bukti Bayar</th> 
-                        <th class="text-center">Status</th>
+                        <th>Buku</th>
+                        <th>Deadline</th>
+                        <th>Status & Denda</th>
                         <th class="text-center">Tindakan</th>
                     </tr>
                 </thead>
-                <tbody style="color: #3d2b1f;">
-                    <?php $no=1; foreach($peminjaman as $p): 
+                <tbody>
+                    <?php foreach($peminjaman as $p): 
                         $tgl_deadline = strtotime($p['tgl_kembali']);
-                        $tgl_sekarang = time();
-                        $is_telat = ($tgl_sekarang > $tgl_deadline && $p['status'] != 'kembali');
-                        $hari_telat = ($is_telat) ? floor(($tgl_sekarang - $tgl_deadline) / (60 * 60 * 24)) : 0;
+                        $is_telat = (time() > $tgl_deadline && $p['status'] != 'kembali');
+                        $hari_telat = ($is_telat) ? floor((time() - $tgl_deadline) / (60 * 60 * 24)) : 0;
                         $total_denda = ($p['status'] == 'kembali') ? $p['total_denda'] : ($hari_telat * 2000);
                     ?>
                     <tr>
-                        <td class="text-center" style="font-family: 'MedievalSharp'; opacity: 0.7;"><?= $no++; ?></td>
+                        <td class="text-center text-muted small">#<?= $p['id_pinjam'] ?></td>
                         <td>
-                            <div class="fw-bold"><?= htmlspecialchars($p['nama']); ?></div>
-                            <small>ID: #<?= $p['id_user'] ?></small>
+                            <div class="fw-bold text-dark"><?= htmlspecialchars($p['nama']); ?></div>
+                            <small class="text-muted">UID: <?= $p['id_user'] ?></small>
                         </td>
                         <td>
-                            <div class="fw-bold text-truncate" style="max-width: 150px;"><?= htmlspecialchars($p['judul']); ?></div>
-                            <small class="text-muted">Buku ID: <?= $p['id_buku'] ?></small>
+                            <div class="fw-medium"><?= htmlspecialchars($p['judul']); ?></div>
+                            <small class="text-primary">BID: <?= $p['id_buku'] ?></small>
                         </td>
                         <td>
-                            <div class="small fw-bold <?= $is_telat ? 'text-danger' : '' ?>">
-                                <?= date('d/m/Y', strtotime($p['tgl_kembali'])); ?>
+                            <div class="<?= $is_telat ? 'text-danger fw-bold' : 'text-dark' ?>">
+                                <?= date('d M Y', strtotime($p['tgl_kembali'])); ?>
+                            </div>
+                            <?php if($is_telat): ?>
+                                <span class="badge bg-danger" style="font-size: 10px;">Terlambat <?= $hari_telat ?> Hari</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php 
+                            $status_class = ''; $status_text = '';
+                            if($p['status'] == 'pending_pinjam') { $status_class = 'status-dipesan'; $status_text = 'DIPESAN'; }
+                            elseif($p['status'] == 'dipinjam') { $status_class = 'status-dipinjam'; $status_text = 'DIPINJAM'; }
+                            elseif($p['status'] == 'pending_kembali') { $status_class = 'status-proses'; $status_text = 'DICEK ADMIN'; }
+                            elseif($p['status'] == 'kembali') { $status_class = 'status-selesai'; $status_text = 'SELESAI'; }
+                            ?>
+                            <span class="status-badge <?= $status_class ?> mb-1"><?= $status_text ?></span>
+                            
+                            <?php if($total_denda > 0): ?>
+                                <div class="small fw-bold <?= ($p['status_bayar'] == 'lunas') ? 'text-success' : 'text-danger' ?>">
+                                    Rp <?= number_format($total_denda, 0, ',', '.') ?> 
+                                    <i class="fas <?= ($p['status_bayar'] == 'lunas') ? 'fa-check-circle' : 'fa-exclamation-circle' ?>"></i>
+                                </div>
+                            <?php endif; ?>
+                        </td>
+
+                        <td class="text-center">
+                            <div class="d-flex flex-column gap-2 align-items-center">
+                                <?php if(session()->get('role') == 'admin'): ?>
+                                    <?php if($p['status'] == 'pending_pinjam'): ?>
+                                        <button class="btn btn-acc btn-action-sm w-100" data-bs-toggle="collapse" data-bs-target="#accBox<?= $p['id_pinjam'] ?>">
+                                            Konfirmasi Pinjam
+                                        </button>
+                                        <div class="collapse mt-2" id="accBox<?= $p['id_pinjam'] ?>">
+                                            <form action="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_pinjam') ?>" method="post">
+                                                <input type="date" name="tgl_kembali" value="<?= $p['tgl_kembali'] ?>" class="form-control form-control-sm mb-1">
+                                                <button type="submit" class="btn btn-success btn-sm w-100">Simpan & ACC</button>
+                                            </form>
+                                        </div>
+                                    <?php elseif($p['status_bayar'] == 'proses'): ?>
+                                        <a href="<?= base_url('peminjaman/setujui_pembayaran/'.$p['id_pinjam']) ?>" class="btn btn-acc btn-action-sm w-100">ACC Bayar Denda</a>
+                                    <?php elseif($p['status'] == 'pending_kembali'): ?>
+                                        <a href="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_kembali') ?>" class="btn btn-acc btn-action-sm w-100">Terima Buku</a>
+                                    <?php elseif($p['status'] == 'dipinjam'): ?>
+                                        <a href="<?= base_url('peminjaman/kirim_peringatan/'.$p['id_pinjam']) ?>" class="btn btn-tagih btn-action-sm w-100">Kirim Tagihan</a>
+                                    <?php endif; ?>
+                                    
+                                    <?php if($p['bukti_bayar']): ?>
+                                        <button onclick="bukaBukti('<?= $p['id_pinjam'] ?>')" class="btn btn-light btn-action-sm w-100 border text-muted">
+                                            <i class="fas fa-image"></i> Cek Bukti
+                                        </button>
+                                    <?php endif; ?>
+
+                                <?php else: ?>
+                                    <?php if($p['status'] == 'dipinjam'): ?>
+                                        <?php if($is_telat && $p['status_bayar'] != 'lunas'): ?>
+                                            <button type="button" class="btn btn-danger btn-action-sm w-100" data-bs-toggle="modal" data-bs-target="#modalBayar<?= $p['id_pinjam'] ?>">
+                                                Upload Bukti Denda
+                                            </button>
+                                        <?php else: ?>
+                                            <a href="<?= base_url('peminjaman/ajukan_kembali/'.$p['id_pinjam']) ?>" class="btn btn-acc btn-action-sm w-100">Kembalikan</a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </div>
                         </td>
-                        <td>
-                            <?php if($total_denda > 0): ?>
-                                <span class="<?= ($p['status_bayar'] == 'lunas') ? 'text-success' : 'text-danger' ?> fw-bold">
-                                    Rp <?= number_format($total_denda, 0, ',', '.') ?>
-                                </span>
-                            <?php else: ?>
-                                <span class="text-muted small">-</span>
-                            <?php endif; ?>
-                        </td>
-
-                        <td class="text-center">
-                            <?php if($p['bukti_bayar']): ?>
-                                <button type="button" class="btn btn-sm btn-info btn-hp-action" style="font-size: 9px;" onclick="bukaBukti('<?= $p['id_pinjam'] ?>')">
-                                    👁️ Lihat Foto
-                                </button>
-                            <?php else: ?>
-                                <small class="text-muted italic">Belum ada</small>
-                            <?php endif; ?>
-                        </td>
-
-                        <td class="text-center">
-                            <?php 
-                            $class = 'bg-secondary'; $txt = $p['status'];
-                            if($p['status'] == 'pending_pinjam') { $class = 'bg-hp-warning'; $txt = 'Dipesan'; }
-                            elseif($p['status'] == 'dipinjam') { $class = 'bg-hp-info'; $txt = 'Dipinjam'; }
-                            elseif($p['status'] == 'pending_kembali') { $class = 'bg-hp-primary'; $txt = 'Proses Balik'; }
-                            elseif($p['status'] == 'kembali') { $class = 'bg-hp-success'; $txt = 'Selesai'; }
-                            ?>
-                            <span class="badge hp-badge <?= $class ?>"><?= $txt ?></span>
-                            <?php if($p['status_bayar'] == 'proses'): ?>
-                                <div style="font-size: 8px;" class="text-danger fw-bold mt-1">MENUNGGU ACC</div>
-                            <?php endif; ?>
-                        </td>
-
-                        <td class="text-center">
-    <div class="btn-group-vertical w-100">
-        <?php if(session()->get('role') == 'admin'): ?>
-            <?php if($p['status'] == 'pending_pinjam'): ?>
-                <form action="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_pinjam') ?>" method="post">
-                    <div class="p-2 mb-1" style="background: rgba(0,0,0,0.05); border: 1px solid var(--hp-gold);">
-                        <input type="date" name="tgl_pinjam" value="<?= $p['tgl_pinjam'] ?>" class="form-control form-control-sm mb-1" style="font-size: 10px;">
-                        <input type="date" name="tgl_kembali" value="<?= $p['tgl_kembali'] ?>" class="form-control form-control-sm" style="font-size: 10px;">
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-success btn-hp-action w-100">ACC Pinjam</button>
-                </form>
-            <?php elseif($p['status_bayar'] == 'proses'): ?>
-                <a href="<?= base_url('peminjaman/setujui_pembayaran/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Konfirmasi dana sudah masuk?')">ACC Bayar Denda</a>
-            <?php elseif($p['status'] == 'pending_kembali'): ?>
-                <a href="<?= base_url('peminjaman/konfirmasi/'.$p['id_pinjam'].'/setuju_kembali') ?>" class="btn btn-sm btn-primary btn-hp-action">Terima Buku</a>
-            <?php elseif($p['status'] == 'dipinjam'): ?>
-                <a href="<?= base_url('peminjaman/hilang/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-danger btn-hp-action mb-1" onclick="return confirm('Tandai hilang?')">Hilang</a>
-                
-                <a href="<?= base_url('peminjaman/kirim_peringatan/'.$p['id_pinjam']) ?>" 
-                   class="btn btn-sm btn-hp-action" 
-                   style="background: #e67e22; color: white;"
-                   onclick="return confirm('Kirim pesan peringatan ke anggota?')">
-                   📩 Tagih Anggota
-                </a>
-
-            <?php else: ?>
-                <a href="<?= base_url('peminjaman/hapus_riwayat/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-outline-danger btn-hp-action" onclick="return confirm('Hapus permanen?')">Hapus</a>
-            <?php endif; ?>
-
-        <?php else: ?>
-            <?php if($p['status'] == 'dipinjam'): ?>
-                <?php if($is_telat && $p['status_bayar'] != 'lunas'): ?>
-                    <?php if($p['status_bayar'] == 'proses'): ?>
-                        <button class="btn btn-sm btn-secondary btn-hp-action" disabled>Dicek Admin</button>
-                    <?php else: ?>
-                        <a href="<?= base_url('peminjaman/bayar_denda/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-warning btn-hp-action mb-1" target="_blank">📲 Bayar DANA</a>
-                        <button type="button" class="btn btn-sm btn-danger btn-hp-action" data-bs-toggle="modal" data-bs-target="#modalBayar<?= $p['id_pinjam'] ?>">💸 Upload Bukti</button>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <a href="<?= base_url('peminjaman/ajukan_kembali/'.$p['id_pinjam']) ?>" class="btn btn-sm btn-success btn-hp-action" onclick="return confirm('Kembalikan sekarang?')">Kembalikan</a>
-                <?php endif; ?>
-            <?php endif; ?>
-        <?php endif; ?>
-    </div>
-</td>
                     </tr>
 
                     <div class="modal fade" id="modalBayar<?= $p['id_pinjam'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content" style="background: var(--hp-parchment); border: 3px solid #3d2b1f;">
+                            <div class="modal-content modal-content-modern p-3">
+                                <div class="modal-header-modern">
+                                    <h5 class="fw-bold mb-0">Upload Bukti Pembayaran</h5>
+                                </div>
                                 <form action="<?= base_url('peminjaman/upload_bukti/'.$p['id_pinjam']) ?>" method="post" enctype="multipart/form-data">
-                                    <div class="modal-header border-0"><h5 class="hp-title">📜  Pelunasan</h5></div>
-                                    <div class="modal-body">
-                                        <p>Silakan upload bukti transfer denda <strong>Rp <?= number_format($total_denda, 0, ',', '.') ?></strong></p>
+                                    <div class="modal-body py-4">
+                                        <p class="text-muted">Silakan unggah tangkapan layar bukti transfer denda sebesar:</p>
+                                        <h3 class="text-danger fw-bold mb-4">Rp <?= number_format($total_denda, 0, ',', '.') ?></h3>
                                         <input type="file" name="bukti_bayar" class="form-control" required accept="image/*">
                                     </div>
                                     <div class="modal-footer border-0">
-                                        <button type="submit" class="btn btn-success btn-hp-action">Kirim Bukti</button>
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                                        <button type="submit" class="btn btn-primary px-4">Kirim Bukti</button>
                                     </div>
                                 </form>
                             </div>
@@ -238,12 +273,12 @@
 
 <div class="modal fade" id="modalLihatBukti" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: var(--hp-parchment); border: 3px solid #3d2b1f;">
-            <div class="modal-header border-0">
-                <h5 class="hp-title">📜 Bukti Pembayaran</h5>
+        <div class="modal-content modal-content-modern">
+            <div class="modal-header-modern d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Konfirmasi Bukti Transfer</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center" id="wadahFoto">
+            <div class="modal-body text-center p-4" id="wadahFoto">
                 </div>
         </div>
     </div>
@@ -252,7 +287,7 @@
 <script>
 function bukaBukti(id) {
     const wadah = document.getElementById('wadahFoto');
-    wadah.innerHTML = '<div class="spinner-border text-warning"></div>';
+    wadah.innerHTML = '<div class="spinner-border text-primary py-4"></div>';
     
     var myModal = new bootstrap.Modal(document.getElementById('modalLihatBukti'));
     myModal.show();
@@ -263,7 +298,7 @@ function bukaBukti(id) {
             wadah.innerHTML = html;
         })
         .catch(err => {
-            wadah.innerHTML = '<span class="text-danger">Gagal memuat gambar.</span>';
+            wadah.innerHTML = '<span class="text-danger">Gagal memuat bukti pembayaran.</span>';
         });
 }
 </script>
